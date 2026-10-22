@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Voice Assistant</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="app">
+
+    <!-- ===== Sidebar ===== -->
+    <aside class="sidebar" id="sidebar" aria-label="Chat history">
+      <div class="brand">
+        <span class="logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>
+        </span>
+        <span class="brand-name">AI Voice Assistant</span>
+      </div>
+
+      <button class="btn-new" id="newChatBtn" type="button">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        New chat
+      </button>
+
+      <div class="sidebar-label">Recent chats</div>
+      <ul class="chat-list" id="chatList"></ul>
+
+      <div class="sidebar-footer">Model: <strong>{{ model_name }}</strong> ({% if cloud_mode %}cloud via Groq{% else %}local via Ollama{% endif %})</div>
+    </aside>
+    <div class="overlay" id="overlay"></div>
+
+    <!-- ===== Main area ===== -->
+    <main class="main">
+      <header class="topbar">
+        <button class="icon-btn menu-btn" id="menuBtn" type="button" aria-label="Open sidebar">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <h1 class="chat-title" id="chatTitle">New chat</h1>
+        <div class="topbar-actions">
+          <label class="toggle" title="Read AI replies aloud automatically">
+            <input type="checkbox" id="autoSpeak" checked>
+            <span>Auto-read</span>
+          </label>
+          <button class="btn-ghost stop-speak" id="stopSpeakBtn" type="button" hidden>🔊 Stop speaking</button>
+          <button class="btn-ghost" id="clearBtn" type="button">Clear</button>
+        </div>
+      </header>
+
+      <div class="status-banner" id="statusBanner" hidden></div>
+
+      <section class="messages" id="messages" aria-live="polite" aria-label="Conversation"></section>
+
+      <footer class="composer-wrap">
+        <div class="listening" id="listening" hidden>
+          <span class="rec-dot"></span> Listening... speak now
+        </div>
+        <div class="attach-tray" id="attachTray" aria-label="Attached files" hidden></div>
+        <div class="composer">
+          <button class="icon-btn attach-btn" id="attachBtn" type="button" aria-label="Attach photos or files" title="Attach photos or files">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+          </button>
+          <input type="file" id="fileInput" multiple hidden
+                 accept="image/*,.pdf,.docx,.txt,.md,.csv,.json,.xml,.log,.py,.java,.js,.ts,.jsx,.tsx,.html,.css,.c,.cpp,.h,.sql,.yml,.yaml">
+          <textarea id="messageInput" rows="1" maxlength="2000" placeholder="Message AI Voice Assistant..." aria-label="Type your message"></textarea>
+          <button class="icon-btn mic-btn" id="micBtn" type="button" aria-label="Start voice input" title="Voice input">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>
+          </button>
+          <button class="icon-btn send-btn" id="sendBtn" type="button" aria-label="Send message" title="Send">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4z"/></svg>
+          </button>
+        </div>
+        <p class="disclaimer">AI can make mistakes. Answers are generated locally by a small language model. Attach photos, PDFs, DOCX or code files with the paperclip.</p>
+      </footer>
+    </main>
+  </div>
+
+  <div class="drop-overlay" id="dropOverlay" hidden>
+    <div class="drop-box">Drop photos or files to attach</div>
+  </div>
+  <div class="toast" id="toast" role="alert" hidden></div>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
