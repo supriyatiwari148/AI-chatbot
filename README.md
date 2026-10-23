@@ -2,6 +2,8 @@
 
 A ChatGPT-style chatbot that runs **fully on your own computer**. Type or speak a question, get an answer from a real local language model (via [Ollama](https://ollama.com)), and have it read aloud.
 
+View my deployed Project : https://ai-chatbot-2-v3g0.onrender.com
+
 ## Features
 
 - Real AI answers from a local LLM (default `llama3.2:3b`), no paid API or API key
